@@ -10,7 +10,7 @@ from pathlib import Path
 
 # ─── Path configuration ───────────────────────────────────────
 if len(sys.argv) != 6:
-    print("❌ Usage: python kraken_batch.py <images_dir> <output_dir> <recognition_model_path> <segmentation_model_path> <output_format>")
+    print("❌ Usage: python kraken_batch.py <images_dir> <output_dir> <segmentation_model_path> <recognition_model_path> <output_format>")
     sys.exit(1)
 
 images_dir = Path(sys.argv[1])
