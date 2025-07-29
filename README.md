@@ -53,3 +53,36 @@ All the models have been collected from the [Zenodo Kraken](https://zenodo.org/c
 | Printed Arabic-Script Base Model Trained on the OpenITI Corpus | all_arabic_scripts.mlmodel | https://doi.org/10.5281/zenodo.7050270 |
 | HTR-United - Manu Mc Fondue (Manuscripts of Modern and Contemporaneous French - Manu McFrench v4) | ManuMcFondue.mlmodel | https://doi.org/10.5281/zenodo.10886224 |
 | McCATMuS - Transcription model for handwritten, printed and typewritten documents from the 16th century to the 21st century | McCATMuS_nfd_nofix_V1.mlmodel | https://doi.org/10.5281/zenodo.13788177 |
+
+
+---
+
+## Running the LLM Correction Script
+
+### 1. Set Up the Environment
+
+Before running the script, it is recommended to install **OpenAI** in a Python virtual environment. This helps isolate dependencies and prevents conflicts with other projects.
+
+```bash
+python3 -m venv env_name
+source env_name/bin/activate
+pip install openai
+````
+
+### 2. Execute the Script
+
+Once **OpenAI** is installed, you can launch the script using the following command:
+
+```bash
+python3 correction_llm.py <input_folder> <output_folder>
+```
+
+#### Argument Descriptions
+
+* `<input_folder>`: Path to the folder containing the input texts
+* `<output_folder>`: Path to the folder where output files will be saved
+
+
+**WARNING**: Don't forget to modify the script to put your own openai key!
+
+---

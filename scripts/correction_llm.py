@@ -10,7 +10,7 @@ model_id = "mistralai/mixtral-8x7b-instruct"
 
 class EnhancedOCRCorrector:
     def __init__(self):
-        print("✅ Correcteur OCR initialisé")
+        print("✅ OCR Corrector initialized")
 
     def preprocess_text(self, text):
         text = re.sub(r'\s+([,.;:!?])', r'\1', text)
@@ -55,18 +55,17 @@ class EnhancedOCRCorrector:
         return base_prompt
 
     def process_file(self, input_file, output_file):
-
         with open(input_file, "r", encoding="utf-8") as f:
             raw_text = f.read()
 
         if len(raw_text.strip()) == 0:
-            print(f"   ⚪ Fichier vide - ignoré")
+            print(f"   ⚪ Empty file - skipped")
             return None
 
         preprocessed_text = self.preprocess_text(raw_text)
 
         if len(preprocessed_text) > 7000:
-            print(f"   📊 Fichier volumineux ({len(preprocessed_text)} caractères) - division en chunks")
+            print(f"   📊 Large file detected ({len(preprocessed_text)} characters) - splitting into chunks")
             return self.process_large_file(preprocessed_text, input_file, output_file)
 
         try:
@@ -80,7 +79,7 @@ class EnhancedOCRCorrector:
             )
             ai_corrected = response["choices"][0]["message"]["content"].strip()
         except Exception as e:
-            print(f"   ❌ Erreur IA: {str(e)}")
+            print(f"   ❌ AI error: {str(e)}")
             return None
 
         with open(output_file, "w", encoding="utf-8") as f:
@@ -104,7 +103,7 @@ class EnhancedOCRCorrector:
         if current_chunk:
             chunks.append(current_chunk.strip())
 
-        print(f"   📦 Division en {len(chunks)} chunks")
+        print(f"   📦 Split into {len(chunks)} chunks")
 
         corrected_chunks = []
 
@@ -123,7 +122,7 @@ class EnhancedOCRCorrector:
                 ai_chunk = response["choices"][0]["message"]["content"].strip()
                 corrected_chunks.append(ai_chunk)
             except Exception as e:
-                print(f"      ❌ Erreur sur chunk {i+1}: {str(e)}")
+                print(f"      ❌ Error on chunk {i+1}: {str(e)}")
                 corrected_chunks.append(chunk)
 
         final_text = '\n\n'.join(corrected_chunks)
@@ -135,14 +134,14 @@ class EnhancedOCRCorrector:
 
 def main():
     if len(sys.argv) != 3:
-        print("Usage: python script.py <dossier_input> <dossier_output>")
+        print("Usage: python3 correction_llm.py <input_folder> <output_folder>")
         sys.exit(1)
 
     text_dir = Path(sys.argv[1])
     output_dir = Path(sys.argv[2])
 
     if not text_dir.exists():
-        print(f"❌ Dossier d'entrée inexistant: {text_dir}")
+        print(f"❌ Input folder not found: {text_dir}")
         sys.exit(1)
 
     output_dir.mkdir(exist_ok=True)
@@ -151,7 +150,7 @@ def main():
 
     txt_files = sorted(text_dir.glob("*.txt"))
     if not txt_files:
-        print(f"❌ Aucun fichier .txt trouvé dans {text_dir}")
+        print(f"❌ No .txt files found in {text_dir}")
         sys.exit(1)
 
     success_count = 0
@@ -165,10 +164,10 @@ def main():
             else:
                 error_count += 1
         except Exception as e:
-            print(f"❌ Erreur critique sur {txt_file.name}: {str(e)}")
+            print(f"❌ Critical error on {txt_file.name}: {str(e)}")
             error_count += 1
 
-    print(f"✅ Traitement terminé")
+    print(f"✅ Processing complete")
 
 if __name__ == "__main__":
     main()
